@@ -13,16 +13,14 @@ main:
 	
 	li $v0, 5
 	syscall
-	move $t3, $v0
-	li $t0, 0
+	move $t0, $v0
 	li $t1, 1
 	li $t2, 2
-	j boucle
 	
 boucle:
-	beq $t0, $t3, pair
-	beq $t1, $t3, impair
-	sub $t3, $t3, $t2
+	beqz $t0, pair
+	beq $t0, $t1, impair
+	sub $t0, $t0, $t2
 	j boucle
 
 pair:
@@ -35,6 +33,5 @@ impair:
 	li $v0, 4
 	la $a0, _impair
 	syscall
-	j end
 	
 end:
