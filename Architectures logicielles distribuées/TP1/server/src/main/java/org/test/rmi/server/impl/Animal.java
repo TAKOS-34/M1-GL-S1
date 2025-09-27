@@ -4,20 +4,28 @@ import org.test.rmi.common.interfaces.AnimalService;
 
 @Service
 public class Animal implements AnimalService {
-    private static String nom;
-    private static String nomMaitre;
-    private static String espece;
-    private static String race;
+    private String nom;
+    private String nomMaitre;
+    private String race;
+    private Espece espece;
+    private Dossier dossier;
 
-    static {
-        nom = "test1";
-        nomMaitre = "test2";
-        espece = "test3";
-        race = "test4";
+    public Animal() {}
+
+    public Animal(String nom, String nomMaitre, String race, Espece espece, Dossier dossier) {
+        this.nom = nom;
+        this.nomMaitre = nomMaitre;
+        this.race = race;
+        this.espece = espece;
+        this.dossier = dossier;
+    }
+
+    public String getNom() {
+        return nom;
     }
 
     @Override
     public String afficher() {
-        return "Nom : " + nom + ", Maitre : " + nomMaitre + ", Espece : " + espece + ", Race : " + race;
+        return "Nom : " + nom + ", Maitre : " + nomMaitre + ", Race : " + race;
     }
 }

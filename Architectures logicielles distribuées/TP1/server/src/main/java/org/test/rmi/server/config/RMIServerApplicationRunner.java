@@ -6,16 +6,16 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.remoting.rmi.RmiServiceExporter;
 import org.springframework.stereotype.Component;
-import org.test.rmi.common.interfaces.AnimalService;
-import org.test.rmi.server.impl.Animal;
+import org.test.rmi.common.interfaces.CabinetService;
+import org.test.rmi.server.impl.Cabinet;
 
 @Component
 public class RMIServerApplicationRunner implements ApplicationRunner {
-    private Animal animalService;
+    private Cabinet cabinetService;
     private Logger logger = Logger.getLogger(this.getClass().getName());
 
-    public RMIServerApplicationRunner(Animal animalService) {
-        this.animalService = animalService;
+    public RMIServerApplicationRunner(Cabinet cabinetService) {
+        this.cabinetService = cabinetService;
     }
 
     @Override
@@ -24,13 +24,13 @@ public class RMIServerApplicationRunner implements ApplicationRunner {
             System.out.println("Service RMI enregistré : " + serviceName);
         }
     }
-    
+
     @Bean
-    RmiServiceExporter helloServiceExporter() {
+    RmiServiceExporter ServiceExporter() {
         RmiServiceExporter exporter = new RmiServiceExporter();
-        exporter.setServiceName(AnimalService.class.getSimpleName());
-        exporter.setServiceInterface(AnimalService.class);
-        exporter.setService(animalService);
+        exporter.setServiceName(CabinetService.class.getSimpleName());
+        exporter.setServiceInterface(CabinetService.class);
+        exporter.setService(cabinetService);
         exporter.setRegistryPort(1099);
         logger.info("Serveur RMI démarré sur le port 1099");
         return exporter;
