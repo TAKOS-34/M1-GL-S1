@@ -18,7 +18,7 @@ public class Espece implements EspeceService {
         return nom;
     }
 
-    public String afficher() {
+    public String formatedToString() {
         return "Nom : " + nom + ", Durée de vie moyenne : " + dureeVie;
     }
 }

@@ -1,6 +1,8 @@
 package org.test.rmi.server.main;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 @SpringBootApplication(scanBasePackages = {
@@ -10,10 +12,16 @@ import java.util.Objects;
 
 public class Application {
     public static void main(String[] args) {
+        // Security Manager
         String policyUrl = Objects.requireNonNull(Application.class.getClassLoader().getResource("security.policy")).toString();
         System.setProperty("java.security.policy", policyUrl);
         System.setSecurityManager(new SecurityManager());
 
+        // Codebase
+        String codebase = Paths.get("/home/takos/M1 GL S1/Architectures logicielles distribuées/TP1/client/target/classes").toUri().toString();
+        System.setProperty("java.rmi.server.codebase", codebase);
+
+        // Start Application
         SpringApplication.run(Application.class, args);
     }
 }

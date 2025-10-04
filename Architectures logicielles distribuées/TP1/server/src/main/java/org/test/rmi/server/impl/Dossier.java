@@ -6,9 +6,9 @@
     public class Dossier implements DossierService {
         private String nom;
 
-        public Dossier () {}
+        public Dossier() {}
 
-        public Dossier (String nom) {
+        public Dossier(String nom) {
             this.nom = nom;
         }
 
@@ -16,7 +16,7 @@
             return nom;
         }
 
-        public String afficher() {
+        public String formatedToString() {
             return "Nom du dossier : " + nom;
         }
     }

@@ -20,12 +20,18 @@ public class Animal implements AnimalService {
         this.dossier = dossier;
     }
 
+    @Override
     public String getNom() {
         return nom;
     }
 
     @Override
-    public String afficher() {
-        return "Nom : " + nom + ", Maitre : " + nomMaitre + ", Race : " + race;
+    public String getEspece() {
+        return espece.getNom();
+    }
+
+    @Override
+    public String formatedToString() {
+        return "Nom : " + nom + ", Maitre : " + nomMaitre + ", Race : " + race + ", Espece : " + espece.getNom() + ", Dossier : " + dossier.getNom();
     }
 }

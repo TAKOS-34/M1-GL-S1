@@ -1,12 +1,23 @@
 package org.test.rmi.common.interfaces;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public interface CabinetService {
-    boolean addAnimal(String nom, String nomMaitre, String  race, String espece, String dossier);
-    String getAnimalByNom(String nom);
-    ArrayList<String> getAllAnimals();
+public interface CabinetService extends Remote {
+    boolean addAnimal(String nom, String nomMaitre, String  race, String espece) throws RemoteException;
+    boolean addAnimalSpecial(AnimalService animal) throws RemoteException;
+    boolean deleteAnimalByNom(String nom) throws RemoteException;
+    String getAnimalByNom(String nom) throws RemoteException;
+    ArrayList<String> getAllAnimals() throws RemoteException;
 
-    boolean addEspece(String espece, int dureeVie);
+    boolean addEspece(String espece, int dureeVie) throws RemoteException;
+    String getEspeceByNom(String nom) throws RemoteException;
+    boolean deleteEspeceByNom(String nom) throws RemoteException;
+    ArrayList<String> getAllEspeces() throws RemoteException;
 
-    boolean addDossier(String nom);
+    String getDossierByNom(String nom) throws RemoteException;
+    ArrayList<String> getAllDossiers() throws RemoteException;
+
+    boolean addAlerte(AlerteService alerte) throws RemoteException;
+    boolean supprimerAlerte(AlerteService alerte) throws RemoteException;
 }
