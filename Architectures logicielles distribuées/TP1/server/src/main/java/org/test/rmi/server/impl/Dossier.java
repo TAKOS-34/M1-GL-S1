@@ -13,10 +13,14 @@
         }
 
         public String getNom() {
-            return nom;
+            return formatedToString();
+        }
+
+        public void setNom(String nom) {
+            this.nom = nom;
         }
 
         public String formatedToString() {
-            return "Nom du dossier : " + nom;
+            return nom;
         }
     }

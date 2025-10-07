@@ -22,10 +22,7 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
         CabinetService service = (CabinetService) proxy.getObject();
         Scanner scanner = new Scanner(System.in);
         Alerte alerte = new Alerte();
-        if (!service.addAlerte(alerte)) {
-            System.out.println("Erreur lors de la mise en place d'alerte");
-            return;
-        }
+        service.addAlerte(alerte);
 
         while (true) {
             System.out.print(
@@ -42,7 +39,10 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                         "- 9 : Récupérer tous les dossiers\n\n" +
                         "- 10 : Supprimer un animal\n" +
                         "- 11 : Supprimer une espèce\n\n" +
-                        "- quit : Sortir du programme\n"+
+                        "- 12 : Mettre a jour un dossier\n\n" +
+                        "- 13 : Se retirer de la liste d'alerte\n" +
+                        "- 14 : Se mettre dans la liste d'alerte\n\n" +
+                        "- quit : Sortir du programme\n" +
                     "---------------------------------------------------------\n\n> "
             );
 
@@ -60,10 +60,8 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                     System.out.print("Nom de l'espèce : ");
                     String espece = scanner.nextLine();
 
-                    boolean res = service.addAnimal(nom, nomMaitre, race, espece);
-                    System.out.print("\n");
-                    System.out.println(res ? "Animal ajouté" : "Erreur lors de l'ajout");
-                    System.out.print("\n");
+                    String res = service.addAnimal(nom, nomMaitre, race, espece);
+                    System.out.println(res + "\n");
                     break;
                 }
 
@@ -79,10 +77,8 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                         System.out.println("\nDurée de vie doit être un entier\n");
                         break;
                     }
-                    boolean res = service.addEspece(nom, dureeVie);
-                    System.out.print("\n");
-                    System.out.println(res ? "Espèce ajoutée" : "Erreur lors de l'ajout");
-                    System.out.print("\n");
+                    String res = service.addEspece(nom, dureeVie);
+                    System.out.println(res + "\n");
                     break;
                 }
 
@@ -100,10 +96,8 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                     String couleurPelage = scanner.nextLine();
 
                     Chat chat = new Chat(nom, nomMaitre, race, couleurPelage);
-                    boolean res = service.addAnimalSpecial(chat);
-                    System.out.print("\n");
-                    System.out.println(res ? "Animal ajouté" : "Erreur lors de l'ajout");
-                    System.out.print("\n");
+                    String res = service.addAnimalSpecial(chat);
+                    System.out.println(res + "\n");
                     break;
                 }
 
@@ -175,7 +169,7 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                         }
                         System.out.print("\n");
                     } else {
-                        System.out.println("Aucuns dossires disponibles\n");
+                        System.out.println("Aucuns dossiers disponibles\n");
                     }
                     break;
                 }
@@ -184,10 +178,8 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                     System.out.print("Nom de l'animal à supprimer : ");
                     String nom = scanner.nextLine();
 
-                    boolean res = service.deleteAnimalByNom(nom);
-                    System.out.print("\n");
-                    System.out.println(res ? "Animal supprimé" : "Erreur lors de la suppression");
-                    System.out.print("\n");
+                    String res = service.deleteAnimalByNom(nom);
+                    System.out.println(res + "\n");
                     break;
                 }
 
@@ -195,18 +187,41 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                     System.out.print("Nom de l'espèce à supprimer : ");
                     String nom = scanner.nextLine();
 
-                    boolean res = service.deleteEspeceByNom(nom);
-                    System.out.print("\n");
-                    System.out.println(res ? "Espèce supprimé" : "Erreur lors de la suppression");
-                    System.out.print("\n");
+                    String res = service.deleteEspeceByNom(nom);
+                    System.out.println(res + "\n");
                     break;
                 }
 
-                case "quit":
-                    if (service.supprimerAlerte(alerte)) {
+                case "12": {
+                    System.out.print("Nom de l'animal dont le dossier est a mettre a jour : ");
+                    String nom = scanner.nextLine();
+
+                    System.out.print("Nouveau contenu du dossier : ");
+                    String dossier = scanner.nextLine();
+
+                    String res = service.setDossier(nom, dossier);
+                    System.out.println(res + "\n");
+                    break;
+                }
+
+                case "13": {
+                    String res = service.deleteAlerte(alerte);
+                    System.out.println(res + "\n");
+                    break;
+                }
+
+                case "14": {
+                    String res = service.addAlerte(alerte);
+                    System.out.println(res + "\n");
+                    break;
+                }
+
+                case "quit": {
+                        service.deleteAlerte(alerte);
                         System.out.println("Bye!\n");
                         scanner.close();
                         System.exit(0);
+                        break;
                     }
 
                 default:

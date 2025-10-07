@@ -1,5 +1,6 @@
 package org.test.rmi.client.impl;
 import org.test.rmi.common.interfaces.AnimalService;
+import org.test.rmi.common.interfaces.DossierService;
 import java.io.Serializable;
 
 public class Chat implements AnimalService, Serializable {
@@ -24,6 +25,11 @@ public class Chat implements AnimalService, Serializable {
     @Override
     public String getEspece() {
         return "";
+    }
+
+    @Override
+    public DossierService getDossier() {
+        return null;
     }
 
     @Override

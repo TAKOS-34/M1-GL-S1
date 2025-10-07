@@ -30,6 +30,10 @@ public class Animal implements AnimalService {
         return espece.getNom();
     }
 
+    public Dossier getDossier() {
+        return dossier;
+    }
+
     @Override
     public String formatedToString() {
         return "Nom : " + nom + ", Maitre : " + nomMaitre + ", Race : " + race + ", Espece : " + espece.getNom() + ", Dossier : " + dossier.getNom();
