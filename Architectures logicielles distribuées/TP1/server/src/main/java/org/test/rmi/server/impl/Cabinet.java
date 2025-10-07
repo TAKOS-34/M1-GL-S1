@@ -14,7 +14,7 @@ public class Cabinet implements CabinetService {
     private HashMap<String, Espece> especes = new HashMap<>();
     ArrayList<AlerteService> alertes = new ArrayList<>();
 
-    public Cabinet() {}
+    public Cabinet() throws RemoteException {}
 
     // ----------------------- Animals
 
@@ -57,7 +57,7 @@ public class Cabinet implements CabinetService {
     }
 
     @Override
-    public String getAnimalByNom(String nom) {
+    public String getAnimalByNom(String nom) throws RemoteException {
         if (animals.containsKey(nom)) {
             return animals.get(nom).formatedToString();
         }
@@ -65,7 +65,7 @@ public class Cabinet implements CabinetService {
     }
 
     @Override
-    public ArrayList<String> getAllAnimals() {
+    public ArrayList<String> getAllAnimals() throws RemoteException {
         ArrayList<String> res = new ArrayList<>();
         animals.forEach((k, v) -> {
             res.add(v.formatedToString());
@@ -76,7 +76,7 @@ public class Cabinet implements CabinetService {
     // ----------------------- Especes
 
     @Override
-    public String addEspece(String nom, int dureeVie) {
+    public String addEspece(String nom, int dureeVie) throws RemoteException {
         if (especes.containsKey(nom)) {
             return "Erreur : Une espèce avec ce nom existe déjà";
         }
@@ -116,7 +116,7 @@ public class Cabinet implements CabinetService {
     }
 
     @Override
-    public ArrayList<String> getAllEspeces() {
+    public ArrayList<String> getAllEspeces() throws RemoteException {
         ArrayList<String> res = new ArrayList<>();
         especes.forEach((k, v) -> {
             res.add(v.formatedToString());
@@ -127,7 +127,7 @@ public class Cabinet implements CabinetService {
     // ----------------------- Dossiers
 
     @Override
-    public String getDossierByNom(String nom) {
+    public String getDossierByNom(String nom) throws RemoteException {
         for (AnimalService animal : animals.values()) {
             if (animal.getDossier() != null) {
                 if (animal.getDossier().formatedToString().equals(nom)) {
@@ -139,7 +139,7 @@ public class Cabinet implements CabinetService {
     }
 
     @Override
-    public ArrayList<String> getAllDossiers() {
+    public ArrayList<String> getAllDossiers() throws RemoteException {
         ArrayList<String> res = new ArrayList<>();
         animals.forEach((k, v) -> {
             DossierService dossier = v.getDossier();
@@ -151,7 +151,7 @@ public class Cabinet implements CabinetService {
     }
 
     @Override
-    public String setDossier(String nom, String dossier) {
+    public String setDossier(String nom, String dossier) throws RemoteException {
         if (animals.containsKey(nom)) {
             animals.get(nom).getDossier().setNom(dossier);
             return "Dossier mis à jour";
@@ -162,7 +162,7 @@ public class Cabinet implements CabinetService {
     // ----------------------- Alertes
 
     @Override
-    public String addAlerte(AlerteService alerte) {
+    public String addAlerte(AlerteService alerte) throws RemoteException {
         if (!alertes.contains(alerte)) {
             System.out.println("> Un vétérinaire s'est ajouté à la liste d'alertes, taille de la liste : " + (alertes.size() + 1));
             boolean res = alertes.add(alerte);

@@ -10,6 +10,6 @@ public class Alerte extends UnicastRemoteObject implements AlerteService {
 
     @Override
     public void message(String message) throws RemoteException {
-        System.out.println("Alerte : " + message);
+        System.out.println(message);
     }
 }
