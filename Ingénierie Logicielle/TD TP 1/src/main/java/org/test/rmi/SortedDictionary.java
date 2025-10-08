@@ -5,7 +5,6 @@ public class SortedDictionary extends AbstractDictionary {
 
     @Override
     public int indexOf(Object key) {
-        if (!(key instanceof Comparable)) throw new IllegalArgumentException("Incorrect type of key\n");
         for (int i = 0; i < this.keys.length; i++) {
             if (this.keys[i] != null && this.keys[i].equals(key)) {
                 return i;
@@ -16,6 +15,8 @@ public class SortedDictionary extends AbstractDictionary {
 
     @Override
     public int newIndexOf(Object key) {
+        if (!(key instanceof Comparable)) throw new IllegalArgumentException("Incorrect type of key\n");
+
         int size = this.size();
         int newIndex = size;
 
