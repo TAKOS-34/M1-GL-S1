@@ -9,17 +9,19 @@
         public Dossier() {}
 
         public Dossier(String nom) {
-            this.nom = nom;
+            this.nom = "Dossier_" + nom;
         }
 
         public String getNom() {
-            return formatedToString();
+            return nom;
         }
 
+        @Override
         public void setNom(String nom) {
             this.nom = nom;
         }
 
+        @Override
         public String formatedToString() {
             return nom;
         }

@@ -4,7 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.Objects;
 
 @SpringBootApplication(scanBasePackages = {
-        "org.test.rmi.client.config"
+        "org.test.rmi.client.config",
+        "org.test.rmi.client.controller"
 })
 
 public class Application {

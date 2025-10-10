@@ -10,7 +10,6 @@ public class Chat implements AnimalService, Serializable {
     private String couleurPelage;
 
     public Chat(String nom, String nomMaitre, String race, String couleurPelage) {
-        super();
         this.nom = nom;
         this.nomMaitre = nomMaitre;
         this.race = race;

@@ -1,7 +1,6 @@
 package org.test.rmi.server.main;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.Objects;
 

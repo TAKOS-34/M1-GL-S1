@@ -27,8 +27,7 @@ public class Cabinet implements CabinetService {
         if (animals.containsKey(nom)) {
             return "Erreur : un animal avec ce nom existe déjà";
         }
-        Dossier dossier = new Dossier("Dossier_" + nom);
-        Animal newAnimal = new Animal(nom, nomMaitre, race, realEspece, dossier);
+        Animal newAnimal = new Animal(nom, nomMaitre, race, realEspece, new Dossier(nom));
         animals.put(nom, newAnimal);
         checkAlerte();
         System.out.println("> Nouvel animal ajouté, nombre actuel d'animaux : " + animals.size());
