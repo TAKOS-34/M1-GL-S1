@@ -3,6 +3,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.springframework.stereotype.Service;
+import org.test.rmi.common.impl.Espece;
 import org.test.rmi.common.interfaces.AnimalService;
 import org.test.rmi.common.interfaces.CabinetService;
 import org.test.rmi.common.interfaces.AlerteService;
@@ -87,11 +88,11 @@ public class Cabinet implements CabinetService {
     }
 
     @Override
-    public String getEspeceByNom(String nom) {
+    public Espece getEspeceByNom(String nom) {
         if (especes.containsKey(nom)) {
-            return especes.get(nom).formatedToString();
+            return especes.get(nom).getEspece();
         }
-        return "Erreur : aucunes espèces avec ce nom n'existe";
+        return null;
     }
 
     @Override

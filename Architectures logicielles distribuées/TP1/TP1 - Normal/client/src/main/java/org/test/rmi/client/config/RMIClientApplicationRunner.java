@@ -5,7 +5,9 @@ import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 import org.springframework.stereotype.Component;
 import org.test.rmi.client.impl.Alerte;
 import org.test.rmi.client.impl.Chat;
+import org.test.rmi.common.impl.Espece;
 import org.test.rmi.common.interfaces.CabinetService;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -116,9 +118,13 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                     System.out.print("Nom de l'espèce à chercher : ");
                     String nom = scanner.nextLine();
 
-                    String res = service.getEspeceByNom(nom);
+                    Espece res = service.getEspeceByNom(nom);
                     System.out.print("\n");
-                    System.out.println(res);
+                    if (res != null) {
+                        System.out.println(res.formatedToString());
+                    } else {
+                        System.out.println("Erreur : aucuns espèces avec ce nom n'existe");
+                    }
                     System.out.print("\n");
                     break;
                 }

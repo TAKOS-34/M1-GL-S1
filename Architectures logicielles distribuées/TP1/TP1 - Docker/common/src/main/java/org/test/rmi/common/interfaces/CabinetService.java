@@ -1,4 +1,6 @@
 package org.test.rmi.common.interfaces;
+import org.test.rmi.common.impl.Espece;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ public interface CabinetService extends Remote {
     ArrayList<String> getAllAnimals() throws RemoteException;
 
     String addEspece(String espece, int dureeVie) throws RemoteException;
-    String getEspeceByNom(String nom) throws RemoteException;
+    Espece getEspeceByNom(String nom) throws RemoteException;
     String deleteEspeceByNom(String nom) throws RemoteException;
     ArrayList<String> getAllEspeces() throws RemoteException;
 

@@ -1,5 +1,6 @@
 package org.test.rmi.server.impl;
 import org.springframework.stereotype.Service;
+import org.test.rmi.common.impl.Espece;
 import org.test.rmi.common.interfaces.AnimalService;
 
 @Service
@@ -19,6 +20,7 @@ public class Animal implements AnimalService {
         this.espece = espece;
         this.dossier = dossier;
     }
+
 
     @Override
     public String getNom() {

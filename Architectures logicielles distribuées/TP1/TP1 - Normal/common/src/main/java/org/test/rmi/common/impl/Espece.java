@@ -1,8 +1,6 @@
-package org.test.rmi.server.impl;
-import org.springframework.stereotype.Service;
+package org.test.rmi.common.impl;
 import org.test.rmi.common.interfaces.EspeceService;
 
-@Service
 public class Espece implements EspeceService {
     private String nom;
     private int dureeVie;
@@ -18,6 +16,12 @@ public class Espece implements EspeceService {
         return nom;
     }
 
+    @Override
+    public Espece getEspece() {
+        return this;
+    }
+
+    @Override
     public String formatedToString() {
         return "Nom : " + nom + ", Durée de vie moyenne : " + dureeVie;
     }
