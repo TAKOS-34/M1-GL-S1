@@ -1,0 +1,47 @@
+services:
+  rmi-server:
+    build: 
+      dockerfile: ./server/Dockerfile
+      context: .
+    container_name: rmi-server
+    hostname: rmi-server # L'ajout de hostname est une bonne pratique
+    environment:
+      - RMI_SERVER_HOSTNAME=rmi-server
+      - RMI_PORT=1099
+    ports:
+      - "1099:1099"
+      - "8081:8080"
+    volumes:
+      - nfs_commons:/app/commons
+    networks:
+      - rmi-net
+
+  rmi-client:
+    build:
+      dockerfile: ./client/Dockerfile
+      context: .
+    container_name: rmi-client
+    # MODIFICATION : ATTENDRE QUE LE SERVEUR SOIT "HEALTHY"
+    depends_on:
+      - rmi-server
+    environment:
+      - RMI_SERVER_HOST=rmi-server
+      - RMI_SERVER_PORT=1099
+    ports:
+      - "8080:8080"
+      - "6060:6060"
+    volumes:
+      - nfs_commons:/app/commons
+    networks:
+      - rmi-net
+
+networks:
+  rmi-net:
+    driver: bridge
+
+volumes:
+  nfs_commons:
+    driver_opts:
+      type: "nfs"
+      o: "addr=127.0.0.1,rw"
+      device: ":/srv/nfs/commons"

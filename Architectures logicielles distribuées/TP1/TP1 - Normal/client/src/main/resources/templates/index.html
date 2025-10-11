@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cabinet Vétérinaire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3B82F6;
+            --danger-color: #EF4444;
+            --success-color: #10B981;
+            --light-gray: #F3F4F6;
+            --medium-gray: #E5E7EB;
+            --dark-gray: #4B5563;
+            --text-color: #1F2937;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            background-color: var(--light-gray);
+            color: var(--text-color);
+        }
+        .header {
+            background-color: white;
+            padding: 1.5em 2em;
+            border-bottom: 1px solid var(--medium-gray);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .main-container {
+            display: flex;
+            gap: 2em;
+            padding: 2em;
+            max-width: 1400px;
+            margin: auto;
+        }
+        .column { flex: 1; }
+        .forms-column { flex-basis: 35%; }
+        .data-column { flex-basis: 65%; }
+        h1, h2 { color: var(--text-color); }
+        h1 { margin: 0; }
+        h2 { border-bottom: 1px solid var(--medium-gray); padding-bottom: 0.5em; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        th, td { padding: 12px 16px; text-align: left; }
+        thead { background-color: var(--primary-color); color: white; text-transform: uppercase; font-size: 0.8em; letter-spacing: 0.5px; }
+        tbody tr:nth-of-type(even) { background-color: var(--light-gray); }
+        form.card {
+            border: none;
+            padding: 1.5em;
+            margin-bottom: 2em;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .form-group { margin-bottom: 1em; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 0.5em; }
+        input[type=text], input[type=number] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--medium-gray);
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        button:hover { background-color: #2563EB; }
+        .delete-button { background-color: var(--danger-color); }
+        .delete-button:hover { background-color: #DC2626; }
+        .action-cell { display: flex; align-items: center; gap: 10px; }
+        .action-cell input[type=text] { width: 150px; }
+
+        /* NOUVEAUX STYLES POUR LES MESSAGES ET LE BOUTON DE FERMETURE */
+        .message {
+            position: relative; /* Nécessaire pour positionner le bouton à l'intérieur */
+            color: white;
+            padding: 1em 2.5em 1em 1em; /* Plus de padding à droite pour le bouton */
+            margin: 1em 2em 0 2em;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .success { background-color: var(--success-color); }
+        .error { background-color: var(--danger-color); }
+
+        .close-button {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%); /* Centrage vertical parfait */
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0 5px;
+            line-height: 1;
+        }
+        .close-button:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Cabinet Vétérinaire</h1>
+</div>
+
+<div th:if="${successMessage}" class="message success">
+    <span th:text="${successMessage}"></span>
+    <button class="close-button" onclick="this.parentElement.style.display='none';">&times;</button>
+</div>
+<div th:if="${errorMessage}" class="message error">
+    <span th:text="${errorMessage}"></span>
+    <button class="close-button" onclick="this.parentElement.style.display='none';">&times;</button>
+</div>
+
+
+<div class="main-container">
+    <div class="column forms-column">
+        <form action="/addAnimal" method="post" class="card">
+            <h2>Nouvel Animal</h2>
+            <div class="form-group"><label for="nomAnimal">Nom:</label><input id="nomAnimal" type="text" name="nom" required/></div>
+            <div class="form-group"><label for="nomMaitre">Maître:</label><input id="nomMaitre" type="text" name="nomMaitre" required/></div>
+            <div class="form-group"><label for="race">Race:</label><input id="race" type="text" name="race" required/></div>
+            <div class="form-group"><label for="especeAnimal">Espèce:</label><input id="especeAnimal" type="text" name="espece" required/></div>
+            <button type="submit">Ajouter</button>
+        </form>
+        <form action="/addEspece" method="post" class="card">
+            <h2>Nouvelle Espèce</h2>
+            <div class="form-group"><label for="nomEspece">Nom:</label><input id="nomEspece" type="text" name="nom" required/></div>
+            <div class="form-group"><label for="dureeVie">Durée de vie:</label><input id="dureeVie" type="number" name="dureeVie" required min="1"/></div>
+            <button type="submit">Ajouter</button>
+        </form>
+        <form action="/addChat" method="post" class="card">
+            <h2>Nouveau Chat</h2>
+            <div class="form-group"><label for="nomChat">Nom:</label><input id="nomChat" type="text" name="nom" required/></div>
+            <div class="form-group"><label for="nomMaitreChat">Maître:</label><input id="nomMaitreChat" type="text" name="nomMaitre" required/></div>
+            <div class="form-group"><label for="raceChat">Race:</label><input id="raceChat" type="text" name="race" required/></div>
+            <div class="form-group"><label for="couleurPelage">Couleur du pelage:</label><input id="couleurPelage" type="text" name="couleurPelage" required/></div>
+            <button type="submit">Ajouter</button>
+        </form>
+    </div>
+    <div class="column data-column">
+        <h2>Animaux Enregistrés</h2>
+        <table>
+            <thead><tr><th>Description</th><th style="width:350px;">Actions</th></tr></thead>
+            <tbody>
+            <tr th:each="animal : ${animaux}">
+                <td th:text="${animal}">...</td>
+                <td>
+                    <div class="action-cell">
+                        <div th:if="${#strings.contains(animal, 'Dossier : ')}">
+                            <form action="/updateDossier" method="post">
+                                <input type="hidden" name="nom" th:value="${#strings.trim(#strings.substringBefore(#strings.substringAfter(animal, 'Nom : '), ','))}" />
+                                <input type="text" name="dossier" placeholder="Dossier de suivi..." required/>
+                                <button type="submit">MAJ</button>
+                            </form>
+                        </div>
+                        <form action="/deleteAnimal" method="post">
+                            <input type="hidden" name="nom" th:value="${#strings.trim(#strings.substringBefore(#strings.substringAfter(animal, 'Nom : '), ','))}" />
+                            <button type="submit" class="delete-button">Supprimer</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <h2 style="margin-top: 2em;">Espèces Référencées</h2>
+        <table>
+            <thead><tr><th>Description</th><th style="width: 120px">Action</th></tr></thead>
+            <tbody>
+            <tr th:each="espece : ${especes}">
+                <td th:text="${espece}">...</td>
+                <td>
+                    <form action="/deleteEspece" method="post">
+                        <input type="hidden" name="nom" th:value="${#strings.trim(#strings.substringBefore(#strings.substringAfter(espece, 'Nom : '), ','))}" />
+                        <button type="submit" class="delete-button">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
