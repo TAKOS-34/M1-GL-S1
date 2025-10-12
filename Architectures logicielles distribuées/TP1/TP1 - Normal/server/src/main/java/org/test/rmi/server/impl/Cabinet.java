@@ -153,8 +153,13 @@ public class Cabinet implements CabinetService {
     @Override
     public String setDossier(String nom, String dossier) throws RemoteException {
         if (animals.containsKey(nom)) {
-            animals.get(nom).getDossier().setNom(dossier);
-            return "Dossier mis à jour";
+            DossierService d = animals.get(nom).getDossier();
+            if (d != null) {
+                animals.get(nom).getDossier().setNom(dossier);
+                return "Dossier mis à jour";
+            } else {
+                return "Erreur : l'animal n'a pas de dossier";
+            }
         }
         return "Erreur : aucuns animaux avec ce nom n'existe";
     }
