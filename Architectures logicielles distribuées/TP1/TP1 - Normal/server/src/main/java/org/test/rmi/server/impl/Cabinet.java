@@ -190,7 +190,7 @@ public class Cabinet implements CabinetService {
         int size = animals.size();
         if (size == 1 || size == 3 || size == 100 ||  size == 500 || size == 1000) {
             for (AlerteService alerte : alertes) {
-                alerte.message("------------ Le cabinet à maintenant : " + size + " animaux\n");
+                alerte.message("> Alerte - Le cabinet à maintenant : " + size + " animaux\n");
             }
         }
     }

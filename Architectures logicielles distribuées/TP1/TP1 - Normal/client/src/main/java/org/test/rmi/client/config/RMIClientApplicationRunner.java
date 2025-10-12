@@ -85,7 +85,7 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                 }
 
                 case "3": {
-                    System.out.print("Nom de l'espèce : ");
+                    System.out.print("Nom de l'animal : ");
                     String nom = scanner.nextLine();
 
                     System.out.print("Nom du maître : ");
