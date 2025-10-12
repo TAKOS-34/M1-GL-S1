@@ -21,7 +21,6 @@ public class Animal implements AnimalService {
         this.dossier = dossier;
     }
 
-
     @Override
     public String getNom() {
         return nom;

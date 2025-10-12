@@ -1,8 +1,7 @@
 package org.test.rmi.common.impl;
 import org.test.rmi.common.interfaces.EspeceService;
-import java.io.Serializable;
 
-public class Espece implements EspeceService, Serializable {
+public class Espece implements EspeceService {
     private String nom;
     private int dureeVie;
 

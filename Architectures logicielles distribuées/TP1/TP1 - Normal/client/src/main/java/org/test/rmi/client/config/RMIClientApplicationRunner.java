@@ -7,7 +7,6 @@ import org.test.rmi.client.impl.Alerte;
 import org.test.rmi.client.impl.Chat;
 import org.test.rmi.common.impl.Espece;
 import org.test.rmi.common.interfaces.CabinetService;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 

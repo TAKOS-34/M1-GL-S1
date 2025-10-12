@@ -2,7 +2,6 @@
     import org.springframework.stereotype.Service;
     import org.test.rmi.common.interfaces.DossierService;
 
-    @Service
     public class Dossier implements DossierService {
         private String nom;
 
@@ -16,12 +15,10 @@
             return nom;
         }
 
-        @Override
         public void setNom(String nom) {
             this.nom = nom;
         }
 
-        @Override
         public String formatedToString() {
             return nom;
         }

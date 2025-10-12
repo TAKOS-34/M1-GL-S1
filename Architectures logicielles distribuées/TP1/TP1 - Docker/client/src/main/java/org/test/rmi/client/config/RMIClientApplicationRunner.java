@@ -67,7 +67,7 @@ public class RMIClientApplicationRunner implements ApplicationRunner {
                 }
 
                 case "2": {
-                    System.out.print("Nom de l'espèce : ");
+                    System.out.print("Nom de l'animal : ");
                     String nom = scanner.nextLine();
 
                     System.out.print("Durée de vie moyenne (en années > 0) : ");
