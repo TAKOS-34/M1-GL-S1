@@ -116,5 +116,34 @@ Paramètree sur la pile (a0 - a3)
 
 Chaque procédure à sa propre vision de la pile, trois sous régions distinct : paramètres entrants, sortant et données locales
 
-= LISP
+= Analyse de durée de vie et construction du graphe d’interférences
 
+Décider de l'attribution de registre en fonction de la variable est vivante
+
+On peut attribuer le même registre à deux variables si elles n'interfèrent pas
+
+Les registres exploités par la convention d’appel, à savoir \$v0-\$v1, \$a0-\$a3, et \$ra sont allouables. Les registres \$t0-\$t9 (« caller-save ») et \$s0-\$s7 (« callee-save ») le sont également
+
+Une variable v est vivante au point p (d’un programme) s’il existe un chemin menant de p à un point p' où v est utilisée et si v n’est pas définie (affectée) le long de ce chemin
+
+Une variable est morte au point p (d’un programme) si tous les chemins à partir de p mènent à des points $p'_i$ où v est définie (affectée) et si v n’est pas utilisée le long de ces chemins
+
+Une variable peut être ni vivante ni morte (variable pas utilisé)
+
+Naissance d'une variable :
+- Une variable v est engendrée par une instruction i si i utilise v , c’est-à-dire si i lit une valeur dans v
+- Dans ce cas, v est vivante au point qui précède immédiatement i
+
+Décès d'une variable :
+- Une variable v est tuée par une instruction i si i définit v , c’est-à-dire si i écrit une valeur dans v
+- Dans ce cas, v est morte au point qui précède immédiatement i
+
+Vie d'une variable :
+- Si i n’engendre ni ne tue v , alors v est vivante immédiatement avant i si et seulement si elle est vivante immédiatement après i
+- Une variable est vivante après i si et seulement si elle est vivante avant l’un quelconque des successeurs de i
+
+Interférence :
+- Deux variables distinctes interfèrent si l’une est vivante à la sortie d’une instruction qui définit l’autre
+- Deux variables qui n’interfèrent pas peuvent être réalisées par un unique emplacement (registre physique ou emplacement de pile) et inversement
+- Préférence lors d'une affection de variable
+- On choisit l'interférence plutôt que la préférence
