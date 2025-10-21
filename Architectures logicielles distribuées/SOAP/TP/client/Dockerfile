@@ -10,7 +10,7 @@ FROM openjdk:8-jre-alpine3.9
 
 WORKDIR /app
 
-COPY --from=build /app/target/org.anonbnr.web_services.employeeservice.server-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/client-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 

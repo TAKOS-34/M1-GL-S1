@@ -1,3 +1,3 @@
-1.
+= 1.
 
-#figure(image("f1.png"))
+#figure(image("images/f1.png"))
