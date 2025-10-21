@@ -1,9 +1,7 @@
-package org.anonbnr.web_services.employeeservice.exceptions;
+package org.test.soap.server.exceptions;
 
 public class EmployeeException extends Exception {
-	public EmployeeException() {
-		
-	}
+	public EmployeeException() {}
 	
 	public EmployeeException(String message) {
 		super(message);

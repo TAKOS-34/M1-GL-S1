@@ -72,7 +72,7 @@
 						<wsdlUrl>${service.wsdl.url}</wsdlUrl>
 					</wsdlUrls>
 
-					<packageName>org.anonbnr.web_services.employeeservice.generated</packageName>
+					<packageName>org.test.soap.client.generated</packageName>
 					<sourceDestDir>${project.build.directory}/generated-sources/jaxws</sourceDestDir>
 					<keep>true</keep>
 				</configuration>

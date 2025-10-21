@@ -1,5 +1,4 @@
-package org.anonbnr.web_services.employeeservice.model;
-
+package org.test.soap.server.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

@@ -1,13 +1,10 @@
-package org.anonbnr.web_services.employeeservice.service;
-
+package org.test.soap.server.service;
+import org.test.soap.server.exceptions.EmployeeAlreadyExistsException;
+import org.test.soap.server.exceptions.EmployeeNotFoundException;
+import org.test.soap.server.model.Employee;
 import java.util.List;
-
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-
-import org.anonbnr.web_services.employeeservice.exceptions.EmployeeAlreadyExistsException;
-import org.anonbnr.web_services.employeeservice.exceptions.EmployeeNotFoundException;
-import org.anonbnr.web_services.employeeservice.model.Employee;
 
 @WebService
 public interface EmployeeService {

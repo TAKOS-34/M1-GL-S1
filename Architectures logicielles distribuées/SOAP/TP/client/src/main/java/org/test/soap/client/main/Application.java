@@ -1,12 +1,11 @@
-package org.anonbnr.web_services.employeeservice.main;
-
+package org.test.soap.client.main;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = {
-		"org.anonbnr.web_services.employeeservice.generated",
-        "org.anonbnr.web_services.employeeservice.config",
-        "org.anonbnr.web_services.employeeservice.ui",
+		"org.test.soap.client.generated",
+        "org.test.soap.client.config",
+        "org.test.soap.client.ui",
 })
 public class Application {
 

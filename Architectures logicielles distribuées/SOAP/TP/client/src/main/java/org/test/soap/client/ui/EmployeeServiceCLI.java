@@ -1,9 +1,8 @@
-package org.anonbnr.web_services.employeeservice.ui;
-
-import org.anonbnr.web_services.employeeservice.generated.Employee;
-import org.anonbnr.web_services.employeeservice.generated.EmployeeAlreadyExistsException_Exception;
-import org.anonbnr.web_services.employeeservice.generated.EmployeeNotFoundException_Exception;
-import org.anonbnr.web_services.employeeservice.generated.EmployeeService;
+package org.test.soap.client.ui;
+import org.test.soap.client.generated.Employee;
+import org.test.soap.client.generated.EmployeeAlreadyExistsException_Exception;
+import org.test.soap.client.generated.EmployeeNotFoundException_Exception;
+import org.test.soap.client.generated.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

@@ -1,10 +1,8 @@
-package org.anonbnr.web_services.employeeservice.config;
-
+package org.test.soap.client.config;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.anonbnr.web_services.employeeservice.generated.EmployeeService;
-import org.anonbnr.web_services.employeeservice.generated.EmployeeServiceImplService;
+import org.test.soap.client.generated.EmployeeService;
+import org.test.soap.client.generated.EmployeeServiceImplService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

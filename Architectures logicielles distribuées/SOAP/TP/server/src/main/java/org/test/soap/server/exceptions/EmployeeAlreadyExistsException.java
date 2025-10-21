@@ -1,9 +1,7 @@
-package org.anonbnr.web_services.employeeservice.exceptions;
+package org.test.soap.server.exceptions;
 
 public class EmployeeAlreadyExistsException extends EmployeeException {
-	public EmployeeAlreadyExistsException() {
-		
-	}
+	public EmployeeAlreadyExistsException() {}
 	
 	public EmployeeAlreadyExistsException(String message) {
 		super(message);

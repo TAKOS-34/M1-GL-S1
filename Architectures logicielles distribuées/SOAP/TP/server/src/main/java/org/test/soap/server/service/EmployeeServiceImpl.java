@@ -1,16 +1,13 @@
-package org.anonbnr.web_services.employeeservice.service;
-
+package org.test.soap.server.service;
 import java.util.List;
-
 import javax.jws.WebService;
-
-import org.anonbnr.web_services.employeeservice.exceptions.EmployeeAlreadyExistsException;
-import org.anonbnr.web_services.employeeservice.exceptions.EmployeeNotFoundException;
-import org.anonbnr.web_services.employeeservice.model.Employee;
-import org.anonbnr.web_services.employeeservice.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.test.soap.server.exceptions.EmployeeAlreadyExistsException;
+import org.test.soap.server.exceptions.EmployeeNotFoundException;
+import org.test.soap.server.model.Employee;
+import org.test.soap.server.repository.EmployeeRepository;
 
-@WebService(endpointInterface = "org.anonbnr.web_services.employeeservice.service.EmployeeService")
+@WebService(endpointInterface = "org.test.soap.server.service.EmployeeService")
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired

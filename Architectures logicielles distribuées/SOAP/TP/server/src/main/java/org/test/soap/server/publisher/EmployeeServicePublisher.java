@@ -1,8 +1,6 @@
-package org.anonbnr.web_services.employeeservice.publisher;
-
+package org.test.soap.server.publisher;
 import javax.xml.ws.Endpoint;
-
-import org.anonbnr.web_services.employeeservice.service.EmployeeService;
+import org.test.soap.server.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
