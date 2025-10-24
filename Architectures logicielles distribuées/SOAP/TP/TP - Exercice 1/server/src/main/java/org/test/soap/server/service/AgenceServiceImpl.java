@@ -4,9 +4,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import javax.jws.WebService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.test.soap.server.exceptions.ReservationException;
 import org.test.soap.server.model.*;
@@ -17,8 +17,6 @@ import org.test.soap.server.exceptions.ChambreException;
 
 @WebService(endpointInterface = "org.test.soap.server.service.AgenceService")
 public class AgenceServiceImpl implements AgenceService {
-
-    private static final Logger logger = LoggerFactory.getLogger(AgenceServiceImpl.class);
 
     @Autowired
     private ChambreRepository chambreRepository;
@@ -33,15 +31,16 @@ public class AgenceServiceImpl implements AgenceService {
     private ServicePaiement servicePaiement;
 
     @Override
-    public List<Offre> getOffres(String nomVille, String dateDebut, String dateFin, float prixMin, float prixMax, int etoileMin, int nbrPersonnes) {
-        LocalDate dateDebutFormated = LocalDate.parse(dateDebut);
-        LocalDate dateFinFormated = LocalDate.parse(dateFin);
+    public List<Offre> getOffres(DemandeOffre demandeOffre) {
+        LocalDate dateDebutFormated = LocalDate.parse(demandeOffre.getDateDebut());
+        LocalDate dateFinFormated = LocalDate.parse(demandeOffre.getDateFin());
+
         int nombreNuits = (int) ChronoUnit.DAYS.between(dateDebutFormated, dateFinFormated);
         if (nombreNuits <= 0) {
             return Collections.emptyList();
         }
 
-        List<Chambre> chambres = chambreRepository.findAvailableChambres(nomVille, dateDebutFormated, dateFinFormated, prixMin, prixMax, etoileMin, nbrPersonnes);
+        List<Chambre> chambres = chambreRepository.findAvailableChambres(demandeOffre.getNomVille(), dateDebutFormated, dateFinFormated, demandeOffre.getPrixMin(), demandeOffre.getPrixMax(), demandeOffre.getEtoileMin(), demandeOffre.getNbrPersonnes());
         if (chambres.isEmpty()) {
             return Collections.emptyList();
         }
@@ -57,9 +56,10 @@ public class AgenceServiceImpl implements AgenceService {
     }
 
     @Override
-    public boolean reserverChambre(DemandeReservation reservation) throws ChambreException {
+    public String reserverChambre(DemandeReservation reservation) throws ChambreException {
         LocalDate dateDebutFormated;
         LocalDate dateFinFormated;
+
         try {
             dateDebutFormated = LocalDate.parse(reservation.getDateDebut());
             dateFinFormated = LocalDate.parse(reservation.getDateFin());
@@ -69,12 +69,11 @@ public class AgenceServiceImpl implements AgenceService {
 
         int nombreNuits = (int) ChronoUnit.DAYS.between(dateDebutFormated, dateFinFormated);
         if (nombreNuits <= 0) {
-            return false;
+            throw new ChambreException("Dates invalides");
         }
 
         Chambre chambre = chambreRepository.isChambreAvailable(reservation.getChambreId(), dateDebutFormated, dateFinFormated, reservation.getNombrePersonnes());
         if (chambre == null) {
-            logger.info("ÉCHEC : isChambreAvailable a renvoyé NULL.");
             throw new ChambreException("La chambre n'est pas disponible ou elle n'existe pas");
         }
 
@@ -85,10 +84,11 @@ public class AgenceServiceImpl implements AgenceService {
         }
 
         String token = servicePaiement.genererTokenPaiement(reservation.getCarteCredit());
+        String id = UUID.randomUUID().toString();
 
-        Reservation realReservation = new Reservation(client, chambre, token, dateDebutFormated, dateFinFormated, nombreNuits, reservation.getNombrePersonnes(), nombreNuits * chambre.getPrixParNuit());
+        Reservation realReservation = new Reservation(id, client, chambre, token, dateDebutFormated, dateFinFormated, nombreNuits, reservation.getNombrePersonnes(), nombreNuits * chambre.getPrixParNuit());
         reservationRepository.save(realReservation);
-        return true;
+        return id;
     }
 
     @Override
@@ -162,5 +162,60 @@ public class AgenceServiceImpl implements AgenceService {
                 dateFinStr,
                 reservation.getPrix()
         );
+    }
+
+    @Override
+    public String updateReservation(String reservationId, DemandeReservation demandeReservation) throws ReservationException, ChambreException {
+        Reservation reservation = reservationRepository.getReservationsByIdAndClient(reservationId, demandeReservation.getNom(), demandeReservation.getPrenom());
+        if (reservation == null) {
+            throw new ReservationException("La reservation n'existe pas ou n'est pas a votre nom");
+        }
+
+        LocalDate dateDebutFormated;
+        LocalDate dateFinFormated;
+
+        try {
+            dateDebutFormated = LocalDate.parse(demandeReservation.getDateDebut());
+            dateFinFormated = LocalDate.parse(demandeReservation.getDateFin());
+        } catch (Exception e) {
+            throw new ChambreException("Dates invalides");
+        }
+
+        int nombreNuits = (int) ChronoUnit.DAYS.between(dateDebutFormated, dateFinFormated);
+        if (nombreNuits <= 0) {
+            throw new ChambreException("Dates invalides");
+        }
+
+        int conflicts = reservationRepository.verifyIfConflictExists(reservationId, reservation.getChambre().getId(), dateDebutFormated, dateFinFormated);
+        if (conflicts > 0) {
+            throw new ChambreException("La chambre n'est pas disponible à cette date");
+        }
+
+        if (demandeReservation.getNombrePersonnes() > reservation.getChambre().getNombreLits()) {
+            throw new ChambreException("Le nombre de personnes dépasse la capacité de la chambre");
+        }
+
+        reservation.setDateDebut(dateDebutFormated);
+        reservation.setDateFin(dateFinFormated);
+        reservation.setNombreNuits(nombreNuits);
+        reservation.setNombrePersonnes(demandeReservation.getNombrePersonnes());
+        reservation.setPrix(reservation.getChambre().getPrixParNuit() * nombreNuits);
+        reservation.setTokenPaiement(servicePaiement.genererTokenPaiement(demandeReservation.getCarteCredit()));
+
+        reservationRepository.deleteById(reservationId);
+        reservationRepository.save(reservation);
+
+        return reservation.getId();
+    }
+
+    @Override
+    public boolean deleteReservation(String reservationId, String nom, String prenom) {
+        Reservation reservation = reservationRepository.getReservationsByIdAndClient(reservationId, nom, prenom);
+        if (reservation == null) {
+            return false;
+        }
+
+        reservationRepository.deleteById(reservationId);
+        return true;
     }
 }

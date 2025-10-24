@@ -25,8 +25,8 @@ public class Reservation {
 
     public Reservation() {}
 
-    public Reservation(Client client, Chambre chambre, String tokenPaiement, LocalDate dateDebut, LocalDate dateFin, int nombreNuits, int nombrePersonnes, float prix) {
-        this.id = UUID.randomUUID().toString();
+    public Reservation(String id, Client client, Chambre chambre, String tokenPaiement, LocalDate dateDebut, LocalDate dateFin, int nombreNuits, int nombrePersonnes, float prix) {
+        this.id = id;
         this.client = client;
         this.chambre = chambre;
         this.tokenPaiement = tokenPaiement;
