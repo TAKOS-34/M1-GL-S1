@@ -1,7 +1,8 @@
 import java.util.*;
 
-public class Main {
+public class TP3 {
     public static void main(String[] args) {
+        // Classe Main pour choisir le graph et le nombre de couleur
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -12,7 +13,7 @@ public class Main {
             int nbCouleurs = scanner.nextInt();
 
             if (nbCouleurs < 0) {
-                System.out.println("Vous avez saisie un k < 0 donc à été remis à 0");
+                System.out.println("Vous avez saisie un k < 0 donc k à été remis à 0");
                 nbCouleurs = 0;
             }
 
@@ -35,6 +36,7 @@ public class Main {
         }
     }
 
+    // Fonctions d'affichage des résultats (simple getter sur des listes)
     private static List<String> afficherVoisins(List<Noeud> voisins) {
         List<String> noms = new ArrayList<>();
         for (Noeud voisin : voisins) {
@@ -44,6 +46,7 @@ public class Main {
     }
 
     private static void afficherResultats(ArrayList<Noeud> sommets) {
+        System.out.println("------------------------------------------");
         for (Noeud sommet : sommets) {
             System.out.println("Sommet : " + sommet.nom);
             System.out.println("• Connections : " + afficherVoisins(sommet.connections).toString());
@@ -53,14 +56,16 @@ public class Main {
             if (sommet.getCouleur() == -1) {
                 System.out.println("• Couleur : Spillé");
             } else if (sommet.getCouleur() == 0) {
-                System.out.println("• Couleur : Non coloré (Erreur possible)");
+                System.out.println("• Erreur ! Sommet non colorié"); // Cas impossible
             } else {
                 System.out.println("• Couleur : " + sommet.getCouleur());
             }
             System.out.println("------------------------------------------");
         }
+        System.out.println("\n\n");
     }
 
+    // Construction du graph 1 puis appel de la fonction pour colorier et affichage des résultats
     public static void graph1(int k) {
         Map<String, Noeud> noeuds = new HashMap<>();
         noeuds.put("v", new Noeud("v"));
@@ -90,11 +95,10 @@ public class Main {
         }
 
         color(k, sommets);
-        System.out.println("------------------------------------------");
         afficherResultats(sommets);
-        System.out.println("\n\n");
     }
 
+    // Construction du graph 2 puis appel de la fonction pour colorier et affichage des résultats
     public static void graph2(int k) {
         Map<String, Noeud> noeuds = new HashMap<>();
         noeuds.put("t", new Noeud("t"));
@@ -115,11 +119,11 @@ public class Main {
         }
 
         color(k, sommets);
-        System.out.println("------------------------------------------");
         afficherResultats(sommets);
-        System.out.println("\n\n");
     }
 
+    // Point d'entrée de la coloration du graph, construit récursivement la liste des sommets à colorier
+    // en vérifiant s'ils sont trivialement coloriable ou potentiellement à  spiller (si tel est le cas alors on choisi le premier sommet de la liste)
     public static void color(int k, ArrayList<Noeud> sommets) {
         boolean trivialTrouve = false;
         Noeud noeudASimplifier = null;
@@ -137,31 +141,19 @@ public class Main {
         }
 
         if (noeudASimplifier != null) {
+            // On construit la liste des sommets restant en enlevant celui que l'on a choisi (on enlève les sommets un par un)
             ArrayList<Noeud> sommetsRestants = new ArrayList<>(sommets);
             sommetsRestants.remove(noeudASimplifier);
 
+            // Appel récursif sur la liste de sommets restant
             color(k, sommetsRestants);
 
+            // Coloriage de chaque sommet après les appels récursifs, donc dans l'ordre inverse d'empilage (on colorie en premier le dernier sommet choisie)
             noeudASimplifier.setCouleur(colorierPref(noeudASimplifier, k));
         }
     }
 
-    public static int colorier(Noeud sommet, int k) {
-        for (int i = 1; i <= k; i++) {
-            boolean couleurDisponible = true;
-            for (Noeud voisin : sommet.connections) {
-                if (voisin.getCouleur() == i) {
-                    couleurDisponible = false;
-                    break;
-                }
-            }
-            if (couleurDisponible) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
+    // Coloration en fonction de la préférence ou pas, sinon appel de colorier() qui colorie trivialement ou spill
     public static int colorierPref(Noeud sommet, int k) {
         int c = -1;
         ArrayList<Integer> couleursPreferentielles = couleurDisponiblePref(sommet, k);
@@ -180,6 +172,7 @@ public class Main {
             }
         }
 
+        // Si aucune préférence trouvé alors colorie trivialement
         if (c == -1) {
             c = colorier(sommet, k);
         }
@@ -187,37 +180,39 @@ public class Main {
         return c;
     }
 
-    public static ArrayList<Integer> couleurDisponiblePref(Noeud sommet, Integer k) {
-        ArrayList<Integer> couleursDisponibles = new ArrayList<>();
-
-        if (sommet.preferences.isEmpty()) {
-            if (sommet.getCouleur() == 0) {
-                return couleurDisponible(sommet, k);
-            } else if (sommet.getCouleur() > 0) {
-                couleursDisponibles.add(sommet.getCouleur());
-                return couleursDisponibles;
-            } else {
-                return couleursDisponibles;
+    // Colorie trivialement ou spill
+    public static int colorier(Noeud sommet, int k) {
+        for (int i = 1; i <= k; i++) {
+            boolean couleurDisponible = true;
+            for (Noeud voisin : sommet.connections) {
+                if (voisin.getCouleur() == i) {
+                    couleurDisponible = false;
+                    break;
+                }
+            }
+            if (couleurDisponible) {
+                return i;
             }
         }
+        return -1;
+    }
+
+    // On vérifie si un sommet de préférence est déjà colorier et on l'ajoute dans la liste
+    public static ArrayList<Integer> couleurDisponiblePref(Noeud sommet, Integer k) {
+        ArrayList<Integer> couleursPreferentielles = new ArrayList<>();
 
         for (Noeud noeudPrefere : sommet.preferences) {
             if (noeudPrefere.getCouleur() > 0) {
-                if (!couleursDisponibles.contains(noeudPrefere.getCouleur())) {
-                    couleursDisponibles.add(noeudPrefere.getCouleur());
-                }
-            } else if (noeudPrefere.getCouleur() == 0) {
-                ArrayList<Integer> couleursDuPrefere = couleurDisponiblePref(noeudPrefere, k);
-                for (int cPref : couleursDuPrefere) {
-                    if (!couleursDisponibles.contains(cPref)) {
-                        couleursDisponibles.add(cPref);
-                    }
+                if (!couleursPreferentielles.contains(noeudPrefere.getCouleur())) {
+                    couleursPreferentielles.add(noeudPrefere.getCouleur());
                 }
             }
         }
-        return couleursDisponibles;
+
+        return couleursPreferentielles;
     }
 
+    // Retourne les couleurs non utilisées par les voisins du sommet
     public static ArrayList<Integer> couleurDisponible(Noeud sommet, Integer k) {
         ArrayList<Integer> couleursDisponibles = new ArrayList<>();
         for (int i = 1; i <= k; i++) {
@@ -236,12 +231,13 @@ public class Main {
     }
 }
 
+
+// Classe pour gérer chaque noeud, avec ses connections, ses préférences et sa couleur
 class Noeud {
     public String nom;
     public ArrayList<Noeud> connections = new ArrayList<>();
     public ArrayList<Noeud> preferences = new ArrayList<>();
-    public int couleur = -1;
-    public boolean desactive = false;
+    public int couleur = 0; // -1 = spill, 0 = non coloré, > 0 = coloré
 
     public Noeud(String nom) {
         this.nom = nom;
