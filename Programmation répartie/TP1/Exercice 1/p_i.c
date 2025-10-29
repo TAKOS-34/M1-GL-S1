@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
     if (my_id == 1) {
         token.initiator_id = my_id;
         token.hop_count = 1;
-        printf("--- [Pi %d] Initiator sending token (count=%d) ---\n", my_id, token.hop_count);
+        printf("--- [Pi %d] Initiator sending token (count = %d) ---\n", my_id, token.hop_count);
         send(succ_fd, &token, sizeof(token), 0);
     }
 
@@ -124,12 +124,12 @@ int main(int argc, char *argv[]) {
         printf(">>> Ring size is: %d <<<\n", token.hop_count);
     } else {
         token.hop_count++;
-        printf("[Pi %d] Token received and forwarded (count=%d)\n", my_id, token.hop_count);
+        printf("[Pi %d] Token received and forwarded (count = %d)\n", my_id, token.hop_count);
         send(succ_fd, &token, sizeof(token), 0);
     }
 
     close(pred_fd);
     close(succ_fd);
-    printf("[Pi %d] Terminating.\n", my_id);
+    printf("[Pi %d] Terminating\n", my_id);
     return 0;
 }

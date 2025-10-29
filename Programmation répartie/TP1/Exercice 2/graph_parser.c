@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "graph_parser.h" // On inclut notre propre header
+#include "graph_parser.h"
 
 // Fonction interne (static) pour ajouter une arête
 static void add_edge(Graph* graph, int src, int dest) {
@@ -77,7 +77,7 @@ Graph* parse_dimacs_graph(const char* filename) {
     return graph;
 }
 
-// Implémentation de la fonction pour libérer la mémoire
+// Fonction pour libérer la mémoire
 void free_graph(Graph* graph) {
     if (!graph) return;
 
