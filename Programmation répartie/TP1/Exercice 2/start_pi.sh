@@ -9,9 +9,11 @@ NUM=$1
 IP=$2
 PORT=$3
 
+TERMINAL_CMD=(gnome-terminal --title=p_i_Instance)
+
 for (( i=1; i<=$NUM; i++ ))
 do
-   ./p_i "$IP" "$PORT" &
+    "${TERMINAL_CMD[@]}" -- bash -c "./p_i \"$IP\" \"$PORT\" ; exec bash" &
 done
 
 wait
