@@ -1,0 +1,5 @@
+org/test/soap/common/DetailsReservation.class
+org/test/soap/common/DemandeOffre.class
+org/test/soap/common/DemandeReservation.class
+org/test/soap/common/CarteCredit.class
+org/test/soap/common/Offre.class
